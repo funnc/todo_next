@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import propTypes from 'prop-types';
 import axios from 'axios';
 
-// axios.defaults.baseURL = 'http://localhost:9001';
+axios.defaults.baseURL = 'http://localhost:9001';
 
 const TodoItem = ({ title, onClickDelete }) => (
   <li>
@@ -23,7 +23,7 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await axios.get('http://localhost:9001/posts');
+        const { data } = await axios.get('/posts');
         setTodoList(data);
       } catch (e) {
         console.error(e);
@@ -31,7 +31,7 @@ const Home = () => {
     })();
   }, []);
 
-  let setId = todoList.length > 0 ? ++todoList[0].id : 0;
+  let setId = todoList.length > 0 ? todoList[0].id : 0;
 
   const handleChange = (e) => {
     setText(e.target.value);
@@ -39,7 +39,7 @@ const Home = () => {
 
   const onClickAddBtn = () => {
     if (text && text.length > 0) {
-      setTodoList([{ id: setId, title: text }, ...todoList]);
+      setTodoList([{ id: ++setId, title: text }, ...todoList]);
       setText('');
     } else {
       alert('내용을 입력하세요.');
@@ -49,6 +49,8 @@ const Home = () => {
   const deleteItem = (id) => {
     setTodoList(todoList && todoList.filter((item) => item.id !== id));
   };
+
+  console.log(todoList);
 
   return (
     <>
