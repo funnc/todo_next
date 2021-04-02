@@ -14,7 +14,6 @@ export default class todoDocument extends Document {
           <meta httpEquiv="Expires" content="-1" />
           <meta name="format-detection" content="telephone=no" />
           <link rel="shortcut icon" href="/favicon.ico" />
-          <title>todo Next</title>
         </Head>
         <body>
           <Main />

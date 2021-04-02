@@ -1,8 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import Head from 'next/head';
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <Head>
+        <title>todo Next</title>
+      </Head>
+      <Component {...pageProps} />
+    </>
+  );
 }
 
 MyApp.propTypes = {
