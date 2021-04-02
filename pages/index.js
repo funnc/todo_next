@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import propTypes from 'prop-types';
 
-let getId = 1;
+const mockData = [
+  { id: 20, title: '데이터 2' },
+  { id: 19, title: '데이터 1' },
+];
 
-const TodoItem = ({ id, title, onClickDelete }) => (
-  <li id={id}>
+let itemId = mockData[0].id;
+
+const TodoItem = ({ title, onClickDelete }) => (
+  <li>
     <h2>
       <a href="#">{title}</a>
       {` `}
@@ -25,7 +30,7 @@ const Home = () => {
 
   const onClickAddBtn = () => {
     if (text && text.length > 0) {
-      setTodoList([...todoList, { id: ++getId, title: text }]);
+      setTodoList([{ id: ++itemId, title: text }, ...todoList]);
       setText('');
     } else {
       alert('내용을 입력하세요.');
@@ -35,6 +40,12 @@ const Home = () => {
   const deleteItem = (id) => {
     setTodoList(todoList && todoList.filter((item) => item.id !== id));
   };
+
+  useEffect(() => {
+    if (mockData) {
+      setTodoList(mockData);
+    }
+  }, []);
 
   return (
     <>
@@ -48,7 +59,6 @@ const Home = () => {
           todoList.map(({ id, title }) => (
             <TodoItem
               key={id}
-              id={id}
               title={title}
               onClickDelete={() => deleteItem(id)}
             />
@@ -59,12 +69,10 @@ const Home = () => {
 };
 
 TodoItem.defaultProps = {
-  id: 1,
   title: '',
   onClickDelete: () => {},
 };
 TodoItem.propTypes = {
-  id: propTypes.number,
   title: propTypes.string,
   onClickDelete: propTypes.func,
 };
