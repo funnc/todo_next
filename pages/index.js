@@ -72,8 +72,16 @@ const Home = () => {
 
   const deleteItem = (id) => {
     if (todoList) {
-      const filteredItems = todoList.filter((item) => item.id !== id);
-      setTodoList(sortingItems(filteredItems));
+      (async () => {
+        try {
+          await axios.delete(`/posts/${id}`);
+          const { data } = await axios.get('/posts');
+          await Promise.resolve(sortingItems(data));
+          setTodoList(data);
+        } catch (e) {
+          console.error(e);
+        }
+      })();
     }
   };
 
