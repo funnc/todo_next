@@ -16,6 +16,20 @@ const TodoItem = ({ title, onClickDelete }) => (
   </li>
 );
 
+const sortingItems = (items) => {
+  if (items && items.length > 0) {
+    items.sort((a, b) => {
+      if (a.id > b.id) {
+        return -1; // 오름차순 정렬
+      }
+      if (a.id < b.id) {
+        return 1; // 오름차순 정렬
+      }
+      return 0;
+    });
+  }
+};
+
 const Home = () => {
   const [text, setText] = useState('');
   const [todoList, setTodoList] = useState([]);
@@ -24,6 +38,7 @@ const Home = () => {
     (async () => {
       try {
         const { data } = await axios.get('/posts');
+        await Promise.resolve(sortingItems(data));
         setTodoList(data);
       } catch (e) {
         console.error(e);
@@ -39,7 +54,16 @@ const Home = () => {
 
   const onClickAddBtn = () => {
     if (text && text.length > 0) {
-      setTodoList([{ id: ++setId, title: text }, ...todoList]);
+      (async () => {
+        try {
+          await axios.post('/posts', { id: ++setId, title: text });
+          const { data } = await axios.get('/posts');
+          await Promise.resolve(sortingItems(data));
+          setTodoList(data);
+        } catch (e) {
+          console.error(e);
+        }
+      })();
       setText('');
     } else {
       alert('내용을 입력하세요.');
@@ -47,7 +71,10 @@ const Home = () => {
   };
 
   const deleteItem = (id) => {
-    setTodoList(todoList && todoList.filter((item) => item.id !== id));
+    if (todoList) {
+      const filteredItems = todoList.filter((item) => item.id !== id);
+      setTodoList(sortingItems(filteredItems));
+    }
   };
 
   console.log(todoList);
