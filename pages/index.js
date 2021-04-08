@@ -6,6 +6,8 @@ import axios from 'axios';
 
 axios.defaults.baseURL = BASE_URL;
 
+let todoListId = 0;
+
 const TodoItem = ({ id, title, onClickDelete }) => (
   <li id={id}>
     <h2>
@@ -22,54 +24,53 @@ const Home = () => {
   const [text, setText] = useState('');
   const [todoList, setTodoList] = useState([]);
 
-  useEffect(() => {
-    (async () => {
+  useEffect(async () => {
+    try {
+      const { data } = await axios.get('/posts');
+      await Promise.resolve(sorting(data));
+      setTodoList(data);
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
+  const handleChange = (e) => {
+    setText(e.target.value);
+  };
+
+  const onClickAddBtn = async () => {
+    if (text && text.length > 0) {
       try {
+        if (todoList.length > 0) {
+          todoListId = todoList[0].id;
+        }
+        await axios.post('/posts', {
+          id: ++todoListId,
+          title: text,
+          comments: [],
+        });
         const { data } = await axios.get('/posts');
         await Promise.resolve(sorting(data));
         setTodoList(data);
       } catch (e) {
         console.error(e);
       }
-    })();
-  }, []);
-
-  let setId = todoList.length > 0 ? todoList[0].id : 0;
-
-  const handleChange = (e) => {
-    setText(e.target.value);
-  };
-
-  const onClickAddBtn = () => {
-    if (text && text.length > 0) {
-      (async () => {
-        try {
-          await axios.post('/posts', { id: ++setId, title: text });
-          const { data } = await axios.get('/posts');
-          await Promise.resolve(sorting(data));
-          setTodoList(data);
-        } catch (e) {
-          console.error(e);
-        }
-      })();
       setText('');
     } else {
       alert('내용을 입력하세요.');
     }
   };
 
-  const deleteItem = (id) => {
+  const deleteItem = async (id) => {
     if (todoList) {
-      (async () => {
-        try {
-          await axios.delete(`/posts/${id}`);
-          const { data } = await axios.get('/posts');
-          await Promise.resolve(sorting(data));
-          setTodoList(data);
-        } catch (e) {
-          console.error(e);
-        }
-      })();
+      try {
+        await axios.delete(`/posts/${id}`);
+        const { data } = await axios.get('/posts');
+        await Promise.resolve(sorting(data));
+        setTodoList(data);
+      } catch (e) {
+        console.error(e);
+      }
     }
   };
 

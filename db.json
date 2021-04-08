@@ -5,16 +5,30 @@
       "title": "데이터 1"
     },
     {
-      "id": 20,
-      "title": "데이터 3"
+      "id": 19,
+      "title": "데이터 2"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "postId": 18,
+      "content": "댓글 1"
     },
     {
-      "id": 21,
-      "title": "sasdf"
+      "id": 4,
+      "postId": 18,
+      "content": "댓글 4"
     },
     {
-      "id": 22,
-      "title": "ffffff"
+      "id": 3,
+      "postId": 18,
+      "content": "댓글 3"
+    },
+    {
+      "id": 2,
+      "postId": 19,
+      "content": "댓글 2"
     }
   ]
 }
