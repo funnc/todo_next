@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import propTypes from 'prop-types';
+import { BASE_URL } from '../constants/urls';
+import { sorting } from '../libs/sorting';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:9001';
+axios.defaults.baseURL = BASE_URL;
 
-const TodoItem = ({ title, onClickDelete }) => (
-  <li>
+const TodoItem = ({ id, title, onClickDelete }) => (
+  <li id={id}>
     <h2>
-      <a href="#">{title}</a>
+      <a href={`/${id}`}>{title}</a>
       {` `}
       <button type="button" onClick={onClickDelete}>
         delete
@@ -15,20 +17,6 @@ const TodoItem = ({ title, onClickDelete }) => (
     </h2>
   </li>
 );
-
-const sortingItems = (items) => {
-  if (items && items.length > 0) {
-    items.sort((a, b) => {
-      if (a.id > b.id) {
-        return -1; // 오름차순 정렬
-      }
-      if (a.id < b.id) {
-        return 1; // 오름차순 정렬
-      }
-      return 0;
-    });
-  }
-};
 
 const Home = () => {
   const [text, setText] = useState('');
@@ -38,7 +26,7 @@ const Home = () => {
     (async () => {
       try {
         const { data } = await axios.get('/posts');
-        await Promise.resolve(sortingItems(data));
+        await Promise.resolve(sorting(data));
         setTodoList(data);
       } catch (e) {
         console.error(e);
@@ -58,7 +46,7 @@ const Home = () => {
         try {
           await axios.post('/posts', { id: ++setId, title: text });
           const { data } = await axios.get('/posts');
-          await Promise.resolve(sortingItems(data));
+          await Promise.resolve(sorting(data));
           setTodoList(data);
         } catch (e) {
           console.error(e);
@@ -76,7 +64,7 @@ const Home = () => {
         try {
           await axios.delete(`/posts/${id}`);
           const { data } = await axios.get('/posts');
-          await Promise.resolve(sortingItems(data));
+          await Promise.resolve(sorting(data));
           setTodoList(data);
         } catch (e) {
           console.error(e);
@@ -89,7 +77,7 @@ const Home = () => {
 
   return (
     <>
-      <h1>nextJs</h1>
+      <h1>todo list</h1>
       <input type="text" value={text} onChange={handleChange} />
       <button type="button" onClick={onClickAddBtn}>
         add
@@ -99,6 +87,7 @@ const Home = () => {
           todoList.map(({ id, title }) => (
             <TodoItem
               key={id}
+              id={id}
               title={title}
               onClickDelete={() => deleteItem(id)}
             />
@@ -109,10 +98,12 @@ const Home = () => {
 };
 
 TodoItem.defaultProps = {
+  id: 1,
   title: '',
   onClickDelete: () => {},
 };
 TodoItem.propTypes = {
+  id: propTypes.number,
   title: propTypes.string,
   onClickDelete: propTypes.func,
 };
