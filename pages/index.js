@@ -73,8 +73,6 @@ const Home = () => {
     }
   };
 
-  console.log(todoList);
-
   return (
     <>
       <h1>todo list</h1>

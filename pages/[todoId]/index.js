@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-// import propTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { BASE_URL } from '../../constants/urls';
-import { sorting } from '../../libs/sorting';
 import axios from 'axios';
 
 axios.defaults.baseURL = BASE_URL;
@@ -31,14 +29,5 @@ const TodoView = () => {
     </>
   );
 };
-
-// TodoView.defaultProps = {
-//   title: '',
-//   onClickDelete: () => {},
-// };
-// TodoView.propTypes = {
-//   title: propTypes.string,
-//   onClickDelete: propTypes.func,
-// };
 
 export default TodoView;
