@@ -36,6 +36,11 @@
       "id": 2,
       "postId": 2,
       "content": "wer"
+    },
+    {
+      "id": 3,
+      "postId": 3,
+      "content": "wer"
     }
   ]
 }
