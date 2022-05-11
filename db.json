@@ -1,34 +1,46 @@
 {
   "posts": [
     {
-      "id": 18,
-      "title": "데이터 1"
+      "id": 2,
+      "title": "asd",
+      "comments": []
     },
     {
-      "id": 19,
-      "title": "데이터 2"
+      "id": 3,
+      "title": "asd",
+      "comments": []
+    },
+    {
+      "id": 4,
+      "title": "b",
+      "comments": []
+    },
+    {
+      "id": 5,
+      "title": "c",
+      "comments": []
+    },
+    {
+      "id": 6,
+      "title": "a",
+      "comments": []
     }
   ],
   "comments": [
     {
       "id": 1,
-      "postId": 18,
-      "content": "댓글 1"
-    },
-    {
-      "id": 4,
-      "postId": 18,
-      "content": "댓글 4"
-    },
-    {
-      "id": 3,
-      "postId": 18,
-      "content": "댓글 3"
+      "postId": 2,
+      "content": "asd"
     },
     {
       "id": 2,
-      "postId": 19,
-      "content": "댓글 2"
+      "postId": 2,
+      "content": "wer"
+    },
+    {
+      "id": 3,
+      "postId": 3,
+      "content": "wer"
     }
   ]
 }
